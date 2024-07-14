@@ -1,0 +1,21 @@
+services:
+  portaineragent:
+    container_name: portaineragent
+    environment:
+      CAP_HOST_MANAGEMENT: "1"
+      TZ: "${TZ}"
+    image: portainer/agent:latest
+    logging:
+      driver: json-file
+      options:
+        max-file: ${DOCKERLOGGING_MAXFILE}
+        max-size: ${DOCKERLOGGING_MAXSIZE}
+        labels-regex: "^.+"
+    ports:
+      - "9001:9001"
+    restart: unless-stopped
+    volumes:
+      - /:/host
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
